@@ -152,6 +152,118 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018.10.10 题解" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="2018-10-10-题解"><a href="#2018-10-10-题解" class="headerlink" title="2018.10.10 题解"></a>2018.10.10 题解</h1><h2 id="难度预计：-E-lt-A-lt-B-lt-C-lt-D-lt-G-lt-F"><a href="#难度预计：-E-lt-A-lt-B-lt-C-lt-D-lt-G-lt-F" class="headerlink" title="难度预计： E &lt; A &lt; B &lt; C &lt; D &lt; G &lt; F"></a>难度预计： E &lt; A &lt; B &lt; C &lt; D &lt; G &lt; F</h2><p>练习地址：<a href="http://mxzf0213.top:8080/problems" target="_blank" rel="noopener">http://mxzf0213.top:8080/problems</a></p>
+<h3 id="E-输出即可AC"><a href="#E-输出即可AC" class="headerlink" title="E: 输出即可AC"></a>E: 输出即可AC</h3><ul>
+<li>发现输出并不能AC，QAQ</li>
+<li>当然打表可以找到规律，$ n \leq 2017，print \ n；n &gt; 2017，print \ n\&amp;1\ ?\ 2017:2016 $</li>
+</ul>
+<p>考虑证明：</p>
+<p>$ n \leq 2017，输出n即可$</p>
+<p>$ n =2018或2019，根据给出的代码得到f(2018)=2016, f(2019)=2017$</p>
+<p>$n&gt;2019，由于f(n-1)&lt;2018，f(n)=f(n-2)$</p>
+<h3 id="A-小学奥数"><a href="#A-小学奥数" class="headerlink" title="A: 小学奥数"></a>A: 小学奥数</h3><p>$定义g = lcm(d,e,f)$</p>
+<p>$ 只考虑d，e，f，直接得到ans = n/g $</p>
+<p>考虑a，b，c，进行容斥:</p>
+<p>$ ans-=n/lcm(g,a)，ans-=n/lcm(g,b),ans-=n/lcm(g,c) $</p>
+<p>$ans+=n/lcm(g,a,b),ans+=n/lcm(g,b,c),ans+=n/lcm(g,a,c)$</p>
+<p>$ans-=n/lcm(g,a,b,c) $</p>
+<p>std：<a href="https://paste.ubuntu.com/p/kDsp68kDDc/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/kDsp68kDDc/</a></p>
+<h3 id="B-小玉的字符串"><a href="#B-小玉的字符串" class="headerlink" title="B: 小玉的字符串"></a>B: 小玉的字符串</h3><ul>
+<li><p>因为$ n\leq1e7，考虑直接的dp，dp[i][j]表示前i位，状态为j的方案数，j的状态有64种；$</p>
+<p>​                $wcf出现了前若干位，csg出现了前若干位，fqj出现了前若干位，共4<em>4</em>4=64种状态；$       </p>
+<p>​              $复杂度为O (n <em> 64 </em> 26)，枚举字符可以进一步优化，有奇效 $</p>
+</li>
+<li><p>$ 考虑矩阵优化dp，复杂度为O(log(n) * 64^3)，足以通过该题 $ </p>
+<p>std：<a href="https://paste.ubuntu.com/p/spCrqDfvk8/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/spCrqDfvk8/</a></p>
+</li>
+</ul>
+<h3 id="C-MORE-XOR"><a href="#C-MORE-XOR" class="headerlink" title="C: MORE XOR"></a>C: MORE XOR</h3><ul>
+<li><p>只考虑f函数，就是前缀异或和；</p>
+</li>
+<li><p>考虑g函数，就是就[l,r]所有子区间的异或和的异或;</p>
+<p>考虑区间中每个位置pos的贡献，发现就是(pos-l+1)$*$(r-pos+1)为奇数时产生贡献；</p>
+<p>具体来说，$r-l+1$为偶数，ans=0；否则从位置$l，l+2，l+4 …$ 算出异或和即可；</p>
+</li>
+<li><p>考虑w函数，还是对每个位置pos考虑是否产生贡献；</p>
+<p>进一步分析，就是包含pos的奇数长度的区间数为奇数个，该位置算贡献；</p>
+<p>那么就得到$(pos-l+2)/2 \&amp;1 \ \&amp;\&amp; \ (r-pos+2)/2 \&amp;1$时该位置算贡献；</p>
+<p>其中上式得奇偶性在所有区间中都是长度为4的循环节(证明留给读者)，</p>
+<p>那么写成$pos\%4$的前缀异或和可以在$O(1)$回答一个询问，总复杂度$O(n+q)$；</p>
+<p>std：<a href="https://paste.ubuntu.com/p/27SMZCXSzf/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/27SMZCXSzf/</a></p>
+</li>
+</ul>
+<h3 id="D-树"><a href="#D-树" class="headerlink" title="D: 树"></a>D: 树</h3><blockquote>
+<p>ps：该套路题出题人想到了三种套路方法，使用任何一种都可以</p>
+</blockquote>
+<ul>
+<li><p>解法1：考虑子树，想到dfs序，那么变为区间查询x子树内深度范围为$[dep[x]+l,dep[x]+r]$的节点个数，主                                                              席树即可，复杂度$O((n+q)logn)$</p>
+</li>
+<li><p>解法2：考虑合并子树，在x子树合并时merge所有儿子所在的树即可，复杂度$O((n+q)logn)$，由于比较好写，所以标称采用了这种做法；</p>
+</li>
+<li><p>解法3：在解法2的合并子树基础上采用启发式合并暴力重构，复杂度$O((n+q)logn)$,相对前两种常数略大；</p>
+<p>std：<a href="https://paste.ubuntu.com/p/JbdkFCZX8X/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/JbdkFCZX8X/</a></p>
+</li>
+</ul>
+<h3 id="G-暴力出奇迹"><a href="#G-暴力出奇迹" class="headerlink" title="G: 暴力出奇迹"></a>G: 暴力出奇迹</h3><blockquote>
+<p>ps：暴力可能有奇迹，但出题人没有出奇迹</p>
+</blockquote>
+<ul>
+<li><p>解法1：每次分段都暴力重构，可以采取哈希，后缀数组，事实上哈希可能重的概率比较大，推荐后缀数组，复杂度$O((n^2+n)log)$，出题人试验了一下，并没有通过；</p>
+</li>
+<li><p>解法2：后缀数组考虑不重构，若分段为$[0,pos]和[pos+1,len-1]$，后缀数组按字典序算不同子串时，分开算，但是要注意一些细节，比如相邻串lcp该怎么取，留给读者思考，复杂度$O(n*log+n^2)$，足以通过；</p>
+</li>
+<li><p>解法3：感谢yi的对拍std，后缀自动机做法(ps：反正出题人不会，所以只出到长度5000)，复杂度$O(26*n)$;</p>
+<p>后缀数组std：<a href="https://paste.ubuntu.com/p/ZjzPZ7qHFw/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/ZjzPZ7qHFw/</a></p>
+<p>后缀自动机std：<a href="https://paste.ubuntu.com/p/VC7YJfpvcc/" target="_blank" rel="noopener">https://paste.ubuntu.com/p/VC7YJfpvcc/</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/15/2018.10.10 题解/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-机器学习笔记" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
